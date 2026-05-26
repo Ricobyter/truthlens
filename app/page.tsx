@@ -17,7 +17,6 @@ import {
   ShieldCheck,
   BarChart3,
   Sparkles,
-  Zap,
   CheckCircle,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
