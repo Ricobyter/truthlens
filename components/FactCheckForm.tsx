@@ -32,8 +32,7 @@ export default function FactCheckForm() {
     if (preset) setInput(preset);
   }, [searchParams]);
 
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
+  async function submitFactCheck() {
     const trimmed = input.trim();
     const looksLikeUrl = /^https?:\/\/\S+$/i.test(trimmed);
 
@@ -79,6 +78,19 @@ export default function FactCheckForm() {
     });
   }
 
+  function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    void submitFactCheck();
+  }
+
+  function handleKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>) {
+    if (e.key !== "Enter" || e.shiftKey) return;
+
+    e.preventDefault();
+    if (isPending) return;
+    void submitFactCheck();
+  }
+
   return (
     <div className="space-y-6">
       <Tabs value={activeTab} onValueChange={setActiveTab}>
@@ -103,6 +115,7 @@ export default function FactCheckForm() {
               <Textarea
                 value={activeTab === tab ? input : ""}
                 onChange={(e) => setInput(e.target.value)}
+                onKeyDown={handleKeyDown}
                 placeholder={INPUT_PLACEHOLDERS[tab]}
                 className="min-h-[140px] text-base"
                 disabled={isPending}
